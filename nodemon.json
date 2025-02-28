@@ -1,0 +1,10 @@
+{
+    "env": { 
+        "PORT": 80,
+        "DB_SCHEMA_NAME": "node-store",
+        "DB_USER_NAME": "lahiru",
+        "DB_USER_PASSWORD": "Ls@2415698",
+        "DB_HOST_URL": "localhost"
+    }
+ }
+
