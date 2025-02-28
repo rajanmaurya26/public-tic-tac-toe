@@ -105,5 +105,6 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
+    console.log('Server is running on port 3000', Samosa);
     console.log(`Server listening on port ${PORT}`);
 });
