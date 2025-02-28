@@ -76,8 +76,6 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   req.user.getProducts()
     .then((products) => {
-      ley Samosa = "Food".
-      console.log("Products: {}", Samosa);
       res.render("admin/product-list", {
         pageTitle: "Admin Products",
         path: "/admin/product-list",
