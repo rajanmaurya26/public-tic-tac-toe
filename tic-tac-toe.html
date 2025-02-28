@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div class="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+    <p id="message"></p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const cells = document.querySelectorAll('.cell');
+        const message = document.getElementById('message');
+        let playerSymbol;
+
+        socket.on('playerSymbol', (symbol) => {
+            playerSymbol = symbol;
+            message.textContent = `You are player ${symbol}`;
+        });
+
+        socket.on('fullGame', (msg) => {
+            message.textContent = msg;
+        });
+
+        socket.on('gameStart', (msg) => {
+            message.textContent = msg;
+        });
+
+        socket.on('boardUpdate', (board) => {
+            board.forEach((value, index) => {
+                cells[index].textContent = value;
+            });
+        });
+
+        socket.on('playerTurn', (player) => {
+            message.textContent = `Player ${player}'s turn`;
+        });
+
+        socket.on('gameOver', (winner) => {
+            if (winner === 'draw') {
+                message.textContent = 'Draw!';
+            } else {
+                message.textContent = `Player ${winner} wins!`;
+            }
+        });
+
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => {
+                if(playerSymbol){
+                    socket.emit('makeMove', index);
+                }
+            });
+        });
+
+        socket.on('gameEnded', (msg) => {
+          message.textContent = msg;
+        });
+    </script>
+</body>
+</html>
